@@ -8,8 +8,7 @@ import (
 )
 
 func DefaultCtx() context.Context {
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
+	c := DefaultChannel()
 
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -19,4 +18,10 @@ func DefaultCtx() context.Context {
 	}()
 
 	return ctx
+}
+
+func DefaultChannel() chan os.Signal {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
+	return c
 }
